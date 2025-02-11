@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Install buildx
 # Post https://devdotnet.org/post/sborka-docker-konteinerov-dlya-arm-arhitekturi-ispolzuya-buildx/
@@ -6,18 +6,17 @@
 # $ chmod +x buildx-tags.sh
 # $ ./buildx-tags.sh
 
-set -feu
-set -o pipefail
+set -feuo pipefail
 
 printf 'Start BUILDX\n'
 
 export ORG="${ORG:-devdotnetorg}"
 export DOCKER_ARGS="${DOCKER_ARGS:---push}"
 if [ -z ${IMAGES+x} ]; then
-  export IMAGES='ubuntu:16.04 ubuntu:18.04 ubuntu:20.04 ubuntu:22.04 ubuntu:23.10 ubuntu:24.04 debian:10 debian:11 debian:12'
+  export IMAGES='ubuntu:16.04 ubuntu:18.04 ubuntu:20.04 ubuntu:22.04 ubuntu:24.04 debian:10 debian:11 debian:12'
 fi
 
-#:ubuntu 16.04, 18.04, 20.04, 22.04, 23.10, 24.04
+#:ubuntu 16.04, 18.04, 20.04, 22.04, 24.04
 #:debian 10, 11, 12
 for IMAGE_VERSION in ${IMAGES}
 do

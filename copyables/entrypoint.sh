@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 printf 'Start entrypoint.sh\n'
 
-set -e
+set -euo pipefail
 set +f
 
 # Folder for sshd. No Change.

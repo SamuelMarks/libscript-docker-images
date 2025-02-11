@@ -19,8 +19,8 @@ LABEL build_version="Image version:- ${IMAGE_VERSION}"
 # Base
 # Set the locale
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
+ENV LANG='en_US.UTF-8'
+ENV LANGUAGE='en_US.UTF-8'
 
 # Password for ssh
 ENV USER_PASSWORD=123456
@@ -32,6 +32,7 @@ COPY copyables /
 
 # Install
 RUN <<-EOF
+set -eu +f
 case "${USER_PASSWORD}" in
   'null'|'')
     case "${USER_PUBKEY}" in
@@ -48,7 +49,8 @@ apt-get install -y openssh-server &&
 # Utils
 apt-get install -y mc htop iotop ncdu tar zip nano vim bash sudo sed &&
 # Net utils
-apt-get install -y iputils-ping traceroute telnet dnsutils iperf nmap &&
+apt-get install -y iputils-ping traceroute telnet iperf nmap &&
+apt-get install -y dnsutils || true &&
 # Deleting keys
 rm -rf /etc/ssh/ssh_host_dsa* /etc/ssh/ssh_host_ecdsa* /etc/ssh/ssh_host_ed25519* /etc/ssh/ssh_host_rsa* &&
 # Config SSH
