@@ -12,7 +12,7 @@ ARG IMAGE_VERSION="alpine:3.20"
 FROM $IMAGE_VERSION
 # Label docker image
 ARG IMAGE_VERSION
-MAINTAINER DevDotNet.Org <anton@devdotnet.org>
+LABEL org.devdotnet.docker_openssh_server.maintainers="DevDotNet.Org <anton@devdotnet.org>"
 LABEL maintainer="DevDotNet.Org <anton@devdotnet.org>"
 LABEL build_version="Image version:- ${IMAGE_VERSION}"
 
