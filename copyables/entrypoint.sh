@@ -17,7 +17,14 @@ if [ -f /.ispasswordset ]; then
     echo "Password already set"
 else
     echo "Set  password of user for sshd"
-    echo 'root:'${USER_PASSWORD} |chpasswd
+    if [ ! -z "${USER_PASSWORD+x}" ]; then
+      echo 'root:'"${USER_PASSWORD}" |chpasswd
+    elif [ ! -z "${USER_PUBKEY+x}" ]; then
+      printf '%s\n' "${USER_PUBKEY}" > /root/.ssh/authorized_keys
+    else
+      >&2 printf 'Set one of USER_PASSWORD xor USER_PUBKEY\n'
+      exit 3
+    fi
     touch /.ispasswordset
 fi
 

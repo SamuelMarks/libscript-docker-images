@@ -24,12 +24,18 @@ ENV LANGUAGE en_US.UTF-8
 
 # Password for ssh
 ENV USER_PASSWORD=123456
+# Pubkey alternative for ssh (set one or the other)
+ENV USER_PUBKEY=
 
 # Copy to image
 COPY copyables /
 
 # Install
-RUN apk update \
+RUN if [ ! -z "${USER_PASSWORD+x}" ] && [ ! -z "${USER_PUBKEY+x}" ]; then \
+      >&2 printf 'Set USER_PASSWORD xor USER_PUBKEY\n'; \
+      exit 3 ; \
+    fi && \
+    apk update \
 	&& apk add --no-cache --upgrade openssh-server \
 # Utils
 	&& apk add --no-cache --upgrade mc htop iotop ncdu tar zip nano vim bash sudo sed \
@@ -40,10 +46,10 @@ RUN apk update \
 # Config SSH
 	&& sed -ri "s|^#PermitRootLogin|PermitRootLogin|" /etc/ssh/sshd_config \
 	&& sed -i "s|PermitRootLogin without-password|PermitRootLogin yes|" /etc/ssh/sshd_config \
-	&& sed -i "s|PermitRootLogin prohibit-password|PermitRootLogin yes|" /etc/ssh/sshd_config \
+	&& [ ! -z "${USER_PUBKEY+x}" ] || sed -i "s|PermitRootLogin prohibit-password|PermitRootLogin yes|" /etc/ssh/sshd_config \
 	&& sed -ri "s|^#?PermitRootLogin\s+.*|PermitRootLogin yes|" /etc/ssh/sshd_config \
-	&& sed -ri "s|^#PasswordAuthentication|PasswordAuthentication|" /etc/ssh/sshd_config \
-	&& sed -ri "s|^PasswordAuthentication no|PasswordAuthentication yes|" /etc/ssh/sshd_config \
+	&& [ ! -z "${USER_PUBKEY+x}" ] || sed -ri "s|^#PasswordAuthentication|PasswordAuthentication|" /etc/ssh/sshd_config \
+	&& [ ! -z "${USER_PUBKEY+x}" ] || sed -ri "s|^PasswordAuthentication no|PasswordAuthentication yes|" /etc/ssh/sshd_config \
 	&& sed -ri "s|UsePAM yes|#UsePAM yes|g" /etc/ssh/sshd_config \
 # Folder Data
 	&& mkdir -p /data \
