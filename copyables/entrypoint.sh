@@ -1,33 +1,40 @@
 #!/bin/bash
-echo "Start entrypoint.sh"
+printf 'Start entrypoint.sh\n'
 
 set -e
+set +f
 
 # Folder for sshd. No Change.
 mkdir -p /var/run/sshd
 
 # Key generation
-ls /etc/ssh/ssh_host_* >/dev/null 2>&1 &&echo "Keys is found" ||echo "Key generation." && ssh-keygen -A
+ls /etc/ssh/ssh_host_* >/dev/null 2>&1 && printf 'Keys is found\n' || printf 'Key generation.\n' && ssh-keygen -A
 
 # Environment variables that are used if not empty:
 # USER_PASSWORD
 
 #Set password
 if [ -f /.ispasswordset ]; then
-    echo "Password already set"
+    printf 'Password already set\n'
 else
-    echo "Set  password of user for sshd"
-    if [ ! -z "${USER_PASSWORD+x}" ]; then
-      echo 'root:'"${USER_PASSWORD}" |chpasswd
-    elif [ ! -z "${USER_PUBKEY+x}" ]; then
-      printf '%s\n' "${USER_PUBKEY}" > /root/.ssh/authorized_keys
-    else
-      >&2 printf 'Set one of USER_PASSWORD xor USER_PUBKEY\n'
-      exit 3
-    fi
+    printf 'Set  password of user for sshd\n'
+    case "${USER_PASSWORD}" in
+      'null'|'')
+        case "${USER_PUBKEY}" in
+            'null'|'')
+              >&2 printf 'Set one of USER_PASSWORD xor USER_PUBKEY\n'
+              exit 3
+              ;;
+            *)
+              printf '%s\n' "${USER_PUBKEY}" >> /root/.ssh/authorized_keys ;;
+        esac
+        ;;
+      *)
+        printf 'root:%s' "${USER_PASSWORD}" |chpasswd ;;
+      esac
     touch /.ispasswordset
 fi
 
-echo "Run sshd"
+printf 'Run sshd\n'
 
 exec "$@"
