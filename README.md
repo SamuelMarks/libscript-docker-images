@@ -1,25 +1,24 @@
-# Docker base image Ubuntu, Debian, Alpine with OpenSSH started
+libscript-docker-images
+-----------------------
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Fork of https://github.com/devdotnetorg/docker-openssh-server with public key support and minor other improvements. Has an [open PR](https://github.com/devdotnetorg/docker-openssh-server/pull/1).
+SSH configured images useful as a clean environment for testing if [libscript](https://github.com/SamuelMarks/libscript) deploys correctly.
 
-Support: amd64, aarch64 (ARM64v8), armhf (ARM32v7), RISC-V (riscv64).
+These are Docker base images for Ubuntu, Debian, Alpine with OpenSSH started.
 
-[![Docker Stars](https://img.shields.io/docker/stars/samuelmarks/openssh-server.svg?maxAge=2592000)](https://github.com/samuelmarks/docker-openssh-server/) [![Docker pulls](https://img.shields.io/docker/pulls/samuelmarks/openssh-server.svg)](https://github.com/samuelmarks/docker-openssh-server/) [![GitHub last commit](https://img.shields.io/github/last-commit/samuelmarks/docker-openssh-server/master)](https://github.com/samuelmarks/docker-openssh-server/) [![GitHub Repo stars](https://img.shields.io/github/stars/samuelmarks/docker-openssh-server)](https://github.com/samuelmarks/docker-openssh-server/) 
+Supports: amd64, aarch64 (ARM64v8), armhf (ARM32v7), RISC-V (riscv64).
 
-Docker official Image Ubuntu, Debian, Alpine with sshd started. Password or public key authentication.
+Configurable with: password or public key authentication.
 
 #### Upstream Links
 
-* Docker Registry @ [samuelmarks/openssh-server](https://hub.docker.com/r/samuelmarks/openssh-server)
-* GitHub @ [samuelmarks/docker-openssh-server](https://github.com/samuelmarks/docker-openssh-server)
+* Docker Registry @ [samuelmarks/libscript-docker-images](https://hub.docker.com/r/samuelmarks/libscript-docker-images)
+* GitHub @ [SamuelMarks/libscript-docker-images](https://github.com/SamuelMarks/libscript-docker-images)
 
 ## Features
 
 * SSH. Allow SSH connection to the container.
-* Midnight Commander (Visual file manager).
-* Text editors vim, nano, mcedit.
-* Htop (an interactive process viewer for Unix).
-* Network utilities such as ping, traceroute, nslookup, telnet, etc.
+* Preinstalled: `rsync`; `curl`; `jq`; `envsubst`; `pandoc`; `crc32`.
 
 ## Image Tags
 
@@ -56,7 +55,7 @@ $ docker run --name openssh-server \
     -p 2222:22 \
     -e USER_PASSWORD='null' \
     -e USER_PUBKEY="$(cat -- .ssh/id_rsa.pub)" \
-    samuelmarks/openssh-server:debian-12
+    samuelmarks/openssh-server:ubuntu
 ```
 
 ### Environment Variables
@@ -124,42 +123,21 @@ Run Putty set you IP address and port `2222`
 
 login `root`, password `654321`
 
-## Shell
+Or use shell:
+```sh
+$ ssh root@localhost -p2222
+# can use `sshpass` if you want to directly provide the password
+# or `-i` if you have a private key to provide and have enabled that login
+```
 
-#### Midnight Commander (Visual file manager)
-
-![Image of Midnight Commander](https://raw.githubusercontent.com/samuelmarks/docker-openssh-server/master/screenshots/scr1-ubuntu-ssh.png)
-
-Site: http://midnight-commander.org/
-
-GNU Midnight Commander is a visual file manager, licensed under GNU General Public License and therefore qualifies as Free Software. It's a feature rich full-screen text mode application that allows you to copy, move and delete files and whole directory trees, search for files and run commands in the subshell. Internal viewer and editor are included.
-
-Start: `$ mc`
-
-#### htop (an interactive process viewer for Unix)
-
-![Image of htop](https://raw.githubusercontent.com/samuelmarks/docker-openssh-server/master/screenshots/scr2-ubuntu-ssh.png)
-
-Site: http://hisham.hm/htop/
-
-This is htop, an interactive process viewer for Unix systems. It is a text-mode application (for console or X terminals) and requires ncurses.
-
-Start: `$ htop`
-
-#### Net tools
-
-![Net tools](https://raw.githubusercontent.com/samuelmarks/docker-openssh-server/master/screenshots/scr3-ubuntu-ssh.png)
- 
 ## Assembly for devices ##
 
 The build for the amd64, aarch64 (ARM64v8), armhf (ARM32v7), RISC-V (riscv64) architecture was done using [buildx](https://github.com/docker/buildx).
 
-Build script see [buildx-tags.sh](https://github.com/samuelmarks/docker-openssh-server/blob/master/buildx-tags.sh).
+Build script see [buildx-tags.sh](./buildx-tags.sh).
 
 ## License ##
 
 [MIT License](https://github.com/samuelmarks/docker-openssh-server/blob/master/LICENSE).
 
-## Need help?
-
-If you have questions on how to use the image, please send mail to anton@devdotnet.org or visit the web-site [DevDotNet.ORG](https://devdotnet.org/).
+Originally forked from https://github.com/devdotnetorg/docker-openssh-server

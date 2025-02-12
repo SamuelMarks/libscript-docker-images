@@ -1,10 +1,8 @@
 ###########################################
 # Official Image Ubuntu with OpenSSH server
 # Allow SSH connection to the container
-# Installed: openssh-server, mc, htop, zip,
-# tar, iotop, ncdu, nano, vim, bash, sudo
-# for net: ping, traceroute, telnet, host,
-# nslookup, iperf, nmap
+# Installed: openssh-server, rsync, curl,
+# jq, envsubst, pandoc, crc32
 ###########################################
 
 ARG IMAGE_VERSION="ubuntu:24.04"
@@ -12,8 +10,8 @@ ARG IMAGE_VERSION="ubuntu:24.04"
 FROM $IMAGE_VERSION
 # Label docker image
 ARG IMAGE_VERSION
-LABEL org.devdotnet.docker_openssh_server.maintainers="DevDotNet.Org <anton@devdotnet.org>"
-LABEL maintainer="DevDotNet.Org <anton@devdotnet.org>"
+LABEL io.offscale.libscript_docker_images.maintainers="Samuel Marks <807580+SamuelMarks@users.noreply.github.com>"
+LABEL maintainer="Samuel Marks <807580+SamuelMarks@users.noreply.github.com>"
 LABEL build_version="Image version:- ${IMAGE_VERSION}"
 
 # Base
@@ -35,12 +33,7 @@ RUN <<-EOF
 set -eu +f ;
 apt-get update &&
 apt-get -y upgrade &&
-apt-get install -y openssh-server &&
-# Utils
-apt-get install -y mc htop iotop ncdu tar zip nano vim bash sudo sed &&
-# Net utils
-apt-get install -y iputils-ping traceroute telnet iperf nmap &&
-apt-get install -y dnsutils || stat /usr/sbin/sshd >/dev/null 2>&1 &&
+apt-get install -y openssh-server rsync jq curl envsubst pandoc libarchive-zip-perl &&
 # Deleting keys
 rm -rf -- '/etc/ssh/ssh_host_dsa'* '/etc/ssh/ssh_host_ecdsa'* '/etc/ssh/ssh_host_ed25519'* '/etc/ssh/ssh_host_rsa'* &&
 # Config SSH
