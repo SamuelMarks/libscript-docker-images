@@ -14,7 +14,7 @@ export ORG="${ORG:-devdotnetorg}"
 export DOCKER_ARGS="${DOCKER_ARGS:---push}"
 if [ -z ${IMAGES+x} ]; then
   # Alpine Linux
-  IMAGES='alpine:3.16 alpine:3.17 alpine:3.18 alpine:3.19 alpine:3.20 alpine:3.21 alpine:edge '
+  IMAGES='alpine:3.16 alpine:3.17 alpine:3.18 alpine:3.19 alpine:3.20 alpine:3.21 alpine:edge'
   # Ubuntu
   IMAGES="${IMAGES}"' ubuntu:16.04 ubuntu:18.04 ubuntu:20.04 ubuntu:22.04 ubuntu:24.04'
   # Debian

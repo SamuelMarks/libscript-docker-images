@@ -1,15 +1,17 @@
 # Docker base image Ubuntu, Debian, Alpine with OpenSSH started
 
+Fork of https://github.com/devdotnetorg/docker-openssh-server with public key support and minor other improvements. Has an [open PR](https://github.com/devdotnetorg/docker-openssh-server/pull/1).
+
 Support: amd64, aarch64 (ARM64v8), armhf (ARM32v7), RISC-V (riscv64).
 
-[![Docker Stars](https://img.shields.io/docker/stars/devdotnetorg/openssh-server.svg?maxAge=2592000)](https://github.com/devdotnetorg/docker-openssh-server/) [![Docker pulls](https://img.shields.io/docker/pulls/devdotnetorg/openssh-server.svg)](https://github.com/devdotnetorg/docker-openssh-server/) [![GitHub last commit](https://img.shields.io/github/last-commit/devdotnetorg/docker-openssh-server/master)](https://github.com/devdotnetorg/docker-openssh-server/) [![GitHub Repo stars](https://img.shields.io/github/stars/devdotnetorg/docker-openssh-server)](https://github.com/devdotnetorg/docker-openssh-server/) 
+[![Docker Stars](https://img.shields.io/docker/stars/samuelmarks/openssh-server.svg?maxAge=2592000)](https://github.com/samuelmarks/docker-openssh-server/) [![Docker pulls](https://img.shields.io/docker/pulls/samuelmarks/openssh-server.svg)](https://github.com/samuelmarks/docker-openssh-server/) [![GitHub last commit](https://img.shields.io/github/last-commit/samuelmarks/docker-openssh-server/master)](https://github.com/samuelmarks/docker-openssh-server/) [![GitHub Repo stars](https://img.shields.io/github/stars/samuelmarks/docker-openssh-server)](https://github.com/samuelmarks/docker-openssh-server/) 
 
 Docker official Image Ubuntu, Debian, Alpine with sshd started. Password or public key authentication.
 
 #### Upstream Links
 
-* Docker Registry @ [devdotnetorg/openssh-server](https://hub.docker.com/r/devdotnetorg/openssh-server)
-* GitHub @ [devdotnetorg/docker-openssh-server](https://github.com/devdotnetorg/docker-openssh-server)
+* Docker Registry @ [samuelmarks/openssh-server](https://hub.docker.com/r/samuelmarks/openssh-server)
+* GitHub @ [samuelmarks/docker-openssh-server](https://github.com/samuelmarks/docker-openssh-server)
 
 ## Features
 
@@ -21,13 +23,13 @@ Docker official Image Ubuntu, Debian, Alpine with sshd started. Password or publ
 
 ## Image Tags
 
-Tags are defined by the mask: `devdotnetorg/openssh-server:<OS_name>-<OS_version>`. For example, the image `devdotnetorg/openssh-server:ubuntu-24.04` is built based on Ubuntu version 24.04.
+Tags are defined by the mask: `samuelmarks/openssh-server:<OS_name>-<OS_version>`. For example, the image `samuelmarks/openssh-server:ubuntu-24.04` is built based on Ubuntu version 24.04.
 
 Images for the following OS versions are builded:
 
-* Ubuntu: 16.04, 18.04, 20.04, 22.04, 22.10, 23.04, 23.10, 24.04;
+* Ubuntu: 16.04, 18.04, 20.04, 22.04, 23.04, 24.04;
 * Debian: 10, 11, 12;
-* Alpine: 3.15, 3.16, 3.17, 3.18, 3.19, 3.20.
+* Alpine: 3.16, 3.17, 3.18, 3.19, 3.20, 3.21.
 
 ### Tags for RISC-V (riscv64)
 
@@ -54,7 +56,7 @@ $ docker run --name openssh-server \
     -p 2222:22 \
     -e USER_PASSWORD='null' \
     -e USER_PUBKEY="$(cat -- .ssh/id_rsa.pub)" \
-    devdotnetorg/openssh-server:ubuntu
+    samuelmarks/openssh-server:debian-12
 ```
 
 ### Environment Variables
@@ -72,7 +74,7 @@ $ docker run -d --name openssh-server \
     -p 2222:22 \
     -e USER_PASSWORD=654321 \
     -v openssh-server-data:/data \
-    devdotnetorg/openssh-server:ubuntu
+    samuelmarks/openssh-server:ubuntu
 ````
 
 
@@ -85,7 +87,7 @@ $ docker run -d --name openssh-server \
     -p 2222:22 \
     -e USER_PASSWORD=654321 \
     -v openssh-server-data:/data \
-    devdotnetorg/openssh-server:ubuntu
+    samuelmarks/openssh-server:ubuntu
 ```
 
 docker-compose:
@@ -94,7 +96,7 @@ docker-compose:
 version: '3.5'
 services:
   openssh-server:
-    image: devdotnetorg/openssh-server:ubuntu
+    image: samuelmarks/openssh-server:ubuntu
     container_name: openssh-server
     environment:
       - USER_PASSWORD=654321
@@ -126,7 +128,7 @@ login `root`, password `654321`
 
 #### Midnight Commander (Visual file manager)
 
-![Image of Midnight Commander](https://raw.githubusercontent.com/devdotnetorg/docker-openssh-server/master/screenshots/scr1-ubuntu-ssh.png)
+![Image of Midnight Commander](https://raw.githubusercontent.com/samuelmarks/docker-openssh-server/master/screenshots/scr1-ubuntu-ssh.png)
 
 Site: http://midnight-commander.org/
 
@@ -136,7 +138,7 @@ Start: `$ mc`
 
 #### htop (an interactive process viewer for Unix)
 
-![Image of htop](https://raw.githubusercontent.com/devdotnetorg/docker-openssh-server/master/screenshots/scr2-ubuntu-ssh.png)
+![Image of htop](https://raw.githubusercontent.com/samuelmarks/docker-openssh-server/master/screenshots/scr2-ubuntu-ssh.png)
 
 Site: http://hisham.hm/htop/
 
@@ -146,17 +148,17 @@ Start: `$ htop`
 
 #### Net tools
 
-![Net tools](https://raw.githubusercontent.com/devdotnetorg/docker-openssh-server/master/screenshots/scr3-ubuntu-ssh.png)
+![Net tools](https://raw.githubusercontent.com/samuelmarks/docker-openssh-server/master/screenshots/scr3-ubuntu-ssh.png)
  
 ## Assembly for devices ##
 
 The build for the amd64, aarch64 (ARM64v8), armhf (ARM32v7), RISC-V (riscv64) architecture was done using [buildx](https://github.com/docker/buildx).
 
-Build script see [buildx-tags.sh](https://github.com/devdotnetorg/docker-openssh-server/blob/master/buildx-tags.sh).
+Build script see [buildx-tags.sh](https://github.com/samuelmarks/docker-openssh-server/blob/master/buildx-tags.sh).
 
 ## License ##
 
-[MIT License](https://github.com/devdotnetorg/docker-openssh-server/blob/master/LICENSE).
+[MIT License](https://github.com/samuelmarks/docker-openssh-server/blob/master/LICENSE).
 
 ## Need help?
 

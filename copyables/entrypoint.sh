@@ -39,7 +39,6 @@ else
               chmod 600 -- '/root/.ssh/authorized_keys'
               ssh-keygen -A
               printf 'Public key set to: %s\n' "${USER_PUBKEY}"
-              cat -- '/etc/ssh/sshd_config'
               ;;
         esac
         ;;
