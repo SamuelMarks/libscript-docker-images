@@ -32,17 +32,7 @@ COPY copyables /
 
 # Install
 RUN <<-EOF
-set -eu +f
-case "${USER_PASSWORD}" in
-  'null'|'')
-    case "${USER_PUBKEY}" in
-      'null'|'')
-        >&2 printf 'Set USER_PASSWORD xor USER_PUBKEY\n' ;
-        exit 3 ;
-      ;;
-    esac
-    ;;
-esac ;
+set -eu +f ;
 apt-get update &&
 apt-get -y upgrade &&
 apt-get install -y openssh-server &&
@@ -50,35 +40,26 @@ apt-get install -y openssh-server &&
 apt-get install -y mc htop iotop ncdu tar zip nano vim bash sudo sed &&
 # Net utils
 apt-get install -y iputils-ping traceroute telnet iperf nmap &&
-apt-get install -y dnsutils || true &&
+apt-get install -y dnsutils || stat /usr/sbin/sshd >/dev/null 2>&1 &&
 # Deleting keys
-rm -rf /etc/ssh/ssh_host_dsa* /etc/ssh/ssh_host_ecdsa* /etc/ssh/ssh_host_ed25519* /etc/ssh/ssh_host_rsa* &&
+rm -rf -- '/etc/ssh/ssh_host_dsa'* '/etc/ssh/ssh_host_ecdsa'* '/etc/ssh/ssh_host_ed25519'* '/etc/ssh/ssh_host_rsa'* &&
 # Config SSH
-sed -ri "s|^#PermitRootLogin|PermitRootLogin|" /etc/ssh/sshd_config &&
-sed -i "s|PermitRootLogin without-password|PermitRootLogin yes|" /etc/ssh/sshd_config &&
-case "${USER_PUBKEY}" in
-  'null'|'')
-    sed -i "s|PermitRootLogin prohibit-password|PermitRootLogin yes|" /etc/ssh/sshd_config ;
-    sed -ri "s|^#PasswordAuthentication|PasswordAuthentication|" /etc/ssh/sshd_config ;
-    sed -ri "s|^PasswordAuthentication no|PasswordAuthentication yes|" /etc/ssh/sshd_config ;
-  ;;
-esac ;
-sed -ri "s|^#?PermitRootLogin\s+.*|PermitRootLogin yes|" /etc/ssh/sshd_config &&
-sed -ri "s|UsePAM yes|#UsePAM yes|g" /etc/ssh/sshd_config &&
+sed -ri 's|^#PermitRootLogin|PermitRootLogin|' '/etc/ssh/sshd_config' &&
+sed -ri 's|^#?PermitRootLogin\s+.*|PermitRootLogin yes|' '/etc/ssh/sshd_config' &&
 # Folder Data
-mkdir -p /data &&
+mkdir -p '/data' &&
 # Cleaning
 apt-get clean autoclean -y &&
 apt-get autoremove -y &&
-rm -rf /var/lib/{apt,dpkg,cache,log}/ &&
-rm -rf /var/lib/apt/lists/*.lz4 &&
-rm -rf /var/log/* &&
-rm -rf /tmp/* &&
-rm -rf /var/tmp/* &&
-rm -rf /usr/share/doc/ &&
-rm -rf /usr/share/man/ &&
-rm -rf $HOME/.cache &&
-chmod +x /entrypoint.sh
+rm -rf '/var/lib'/{apt,dpkg,cache,log}/ &&
+rm -rf '/var/lib/apt/lists'/*.lz4 &&
+rm -rf '/var/log'/* &&
+rm -rf '/tmp'/* &&
+rm -rf '/var/tmp'/* &&
+rm -rf '/usr/share/doc/' &&
+rm -rf '/usr/share/man/' &&
+rm -rf "${HOME}"'/.cache' &&
+chmod +x '/entrypoint.sh'
 
 EOF
 

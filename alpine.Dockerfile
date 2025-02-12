@@ -32,17 +32,7 @@ COPY copyables /
 
 # Install
 RUN <<-EOF
-set -eu +f
-case "${USER_PASSWORD}" in
-  'null'|'')
-    case "${USER_PUBKEY}" in
-      'null'|'')
-        >&2 printf 'Set USER_PASSWORD xor USER_PUBKEY\n' ;
-        exit 3 ;
-      ;;
-    esac
-    ;;
-esac ;
+set -eu +f ;
 apk update &&
 apk add --no-cache --upgrade openssh-server &&
 # Utils
@@ -50,34 +40,23 @@ apk add --no-cache --upgrade mc htop iotop ncdu tar zip nano vim bash sudo sed &
 # Net utils
 apk add --no-cache --upgrade iputils paris-traceroute perl-net-telnet bind-tools iperf nmap
 # Deleting keys
-rm -rf /etc/ssh/ssh_host_dsa* /etc/ssh/ssh_host_ecdsa* /etc/ssh/ssh_host_ed25519* /etc/ssh/ssh_host_rsa* &&
+rm -rf '/etc/ssh/ssh_host_dsa'* '/etc/ssh/ssh_host_ecdsa'* '/etc/ssh/ssh_host_ed25519'* '/etc/ssh/ssh_host_rsa'* &&
 # Config SSH
-[ -d '/etc/ssh' ] || mkdir -- '/etc/ssh'
-touch /etc/ssh/sshd_config
-sed -ri "s|^#PermitRootLogin|PermitRootLogin|" /etc/ssh/sshd_config &&
-sed -i "s|PermitRootLogin without-password|PermitRootLogin yes|" /etc/ssh/sshd_config &&
-case "${USER_PUBKEY}" in
-  'null'|'')
-    sed -i "s|PermitRootLogin prohibit-password|PermitRootLogin yes|" /etc/ssh/sshd_config ;
-    sed -ri "s|^#PasswordAuthentication|PasswordAuthentication|" /etc/ssh/sshd_config ;
-    sed -ri "s|^PasswordAuthentication no|PasswordAuthentication yes|" /etc/ssh/sshd_config ;
-  ;;
-esac ;
-sed -ri "s|^#?PermitRootLogin\s+.*|PermitRootLogin yes|" /etc/ssh/sshd_config &&
-sed -ri "s|UsePAM yes|#UsePAM yes|g" /etc/ssh/sshd_config
+sed -ri 's|^#PermitRootLogin|PermitRootLogin|' '/etc/ssh/sshd_config' &&
+sed -ri 's|^#?PermitRootLogin\s+.*|PermitRootLogin yes|' '/etc/ssh/sshd_config' &&
 # Folder Data
-mkdir -p /data &&
+mkdir -p '/data' &&
 # Cleaning
-rm -rf /var/lib/{apt,dpkg,cache,log}/ &&
-rm -rf /var/lib/apt/lists/*.lz4 &&
-rm -rf /var/log/* &&
-rm -rf /tmp/* &&
-rm -rf /var/tmp/* &&
-rm -rf /usr/share/doc/ &&
-rm -rf /usr/share/man/ &&
-rm -rf /var/cache/apk/* &&
-rm -rf "$HOME"'/.cache' &&
-chmod +x /entrypoint.sh
+rm -rf '/var/lib'/{apt,dpkg,cache,log}/ &&
+rm -rf '/var/lib/apt/lists'/*.lz4 &&
+rm -rf '/var/log'/* &&
+rm -rf '/tmp'/* &&
+rm -rf '/var/tmp'/* &&
+rm -rf '/usr/share/doc/' &&
+rm -rf '/usr/share/man/' &&
+rm -rf '/var/cache/apk'/* &&
+rm -rf "${HOME}"'/.cache' &&
+chmod +x '/entrypoint.sh'
 
 EOF
 

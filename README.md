@@ -4,7 +4,7 @@ Support: amd64, aarch64 (ARM64v8), armhf (ARM32v7), RISC-V (riscv64).
 
 [![Docker Stars](https://img.shields.io/docker/stars/devdotnetorg/openssh-server.svg?maxAge=2592000)](https://github.com/devdotnetorg/docker-openssh-server/) [![Docker pulls](https://img.shields.io/docker/pulls/devdotnetorg/openssh-server.svg)](https://github.com/devdotnetorg/docker-openssh-server/) [![GitHub last commit](https://img.shields.io/github/last-commit/devdotnetorg/docker-openssh-server/master)](https://github.com/devdotnetorg/docker-openssh-server/) [![GitHub Repo stars](https://img.shields.io/github/stars/devdotnetorg/docker-openssh-server)](https://github.com/devdotnetorg/docker-openssh-server/) 
 
-Docker official Image Ubuntu, Debian, Alpine with sshd started. Password authentication.
+Docker official Image Ubuntu, Debian, Alpine with sshd started. Password or public key authentication.
 
 #### Upstream Links
 
@@ -36,20 +36,57 @@ Images for the following OS versions are builded:
 * `:alpine-riscv64` - Alpine edge.
 
 ## Quick Start
- 
+
+### Private + public key setup
+
+Alternatively to specifying `USER_PASSWORD`, you can set `USER_PUBKEY`. For example:
+```sh
+# Create SSH keys
+printf '.ssh' | tee -a .gitignore .dockerignore >/dev/null
+mkdir -- '.ssh'
+ssh-keygen -t 'rsa' -b '4096' -C 'sample ssh keys' -f '.ssh/id_rsa'
+```
+
+#### Usage of public key in running container
+
+```sh
+$ docker run --name openssh-server \
+    -p 2222:22 \
+    -e USER_PASSWORD='null' \
+    -e USER_PUBKEY="$(cat -- .ssh/id_rsa.pub)" \
+    devdotnetorg/openssh-server:ubuntu
+```
+
 ### Environment Variables
  
 Set variable of password for root user:
 
 `-e USER_PASSWORD=123456`
 
+Or alternatively specify `-e USER_PUBKEY` as per above.
+
 Run container with public port for connections is `2222`, password for user root is `654321`, volume `openssh-server-data` for transfer data in/out of container:
 
-`$ docker run -d --name openssh-server -p 2222:22 -e USER_PASSWORD=654321 -v openssh-server-data:/data devdotnetorg/openssh-server:ubuntu`
+```sh
+$ docker run -d --name openssh-server \
+    -p 2222:22 \
+    -e USER_PASSWORD=654321 \
+    -v openssh-server-data:/data \
+    devdotnetorg/openssh-server:ubuntu
+````
+
 
 For network is mynetwork:
 
-`$ docker run -d --name openssh-server --net mynetwork --ip 172.18.0.20 -p 2222:22 -e USER_PASSWORD=654321 -v openssh-server-data:/data devdotnetorg/openssh-server:ubuntu`
+```sh
+$ docker run -d --name openssh-server \
+    --net mynetwork \
+    --ip 172.18.0.20 \
+    -p 2222:22 \
+    -e USER_PASSWORD=654321 \
+    -v openssh-server-data:/data \
+    devdotnetorg/openssh-server:ubuntu
+```
 
 docker-compose:
 

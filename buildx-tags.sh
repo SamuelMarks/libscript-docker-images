@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Install buildx
 # Post https://devdotnet.org/post/sborka-docker-konteinerov-dlya-arm-arhitekturi-ispolzuya-buildx/
@@ -6,7 +6,7 @@
 # $ chmod +x buildx-tags.sh
 # $ ./buildx-tags.sh
 
-set -feuo pipefail
+set -feu
 
 printf 'Start BUILDX\n'
 
@@ -28,16 +28,16 @@ fi
 for IMAGE_VERSION in ${IMAGES}
 do
   #
-  IMAGE_VERSION_2=$(printf '%s' "$IMAGE_VERSION" | tr : -)
+  IMAGE_VERSION_2=$(printf '%s' "${IMAGE_VERSION}" | tr : -)
   export IMAGE_VERSION_2
   # build
   printf 'BUILD image: %s\n' "${IMAGE_VERSION}"
   case "${IMAGE_VERSION}" in
-    *'ubuntu'*|*'debian'*)
-        docker buildx build --platform 'linux/arm,linux/arm64,linux/amd64' -f 'ubuntu.Dockerfile' --build-arg IMAGE_VERSION="${IMAGE_VERSION}" -t "${ORG}"'/openssh-server':"${IMAGE_VERSION_2}" . "${DOCKER_ARGS}"
-    ;;
     *'alpine'*)
         docker buildx build --platform 'linux/arm,linux/arm64,linux/amd64' -f 'alpine.Dockerfile' --build-arg IMAGE_VERSION="${IMAGE_VERSION}" -t "${ORG}"'/openssh-server':"${IMAGE_VERSION_2}" . "${DOCKER_ARGS}"
+    ;;
+    *'ubuntu'*|*'debian'*)
+        docker buildx build --platform 'linux/arm,linux/arm64,linux/amd64' -f 'ubuntu.Dockerfile' --build-arg IMAGE_VERSION="${IMAGE_VERSION}" -t "${ORG}"'/openssh-server':"${IMAGE_VERSION_2}" . "${DOCKER_ARGS}"
     ;;
   esac
   #
