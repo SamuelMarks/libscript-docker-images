@@ -61,27 +61,6 @@ do
   #
 done
 
-#latest ubuntu:24.04
-case "${IMAGES}" in
-  *'ubuntu:24.04'*)
-    docker buildx build --platform "${PLATFORM_DEB}" -f 'ubuntu.Dockerfile' --build-arg IMAGE_VERSION='ubuntu:24.04' -t "${ORG}"'/'"${REPO}":'ubuntu' . "${DOCKER_ARGS}"
-  ;;
-esac
-
-#latest debian:12
-case "${IMAGES}" in
-  *'debian:12'*)
-    docker buildx build --platform "${PLATFORM_DEB}" -f 'ubuntu.Dockerfile' --build-arg IMAGE_VERSION='debian:12' -t "${ORG}"'/'"${REPO}":'debian' . "${DOCKER_ARGS}"
-  ;;
-esac
-
-#latest alpine:3.20
-case "${IMAGES}" in
-  *'alpine:3.20'*)
-    docker buildx build --platform "${PLATFORM_ALPINE}" -f 'alpine.Dockerfile' --build-arg IMAGE_VERSION='alpine:3.20' -t "${ORG}"'/'"${REPO}":'alpine' . "${DOCKER_ARGS}"
-  ;;
-esac
-
 # RISC-V (riscv64)
 #:ubuntu-riscv64
 case "${IMAGES}" in
@@ -107,13 +86,6 @@ case "${IMAGES}" in
     if [ "${RISCV64_ALPINE_BUILDS}" -eq 1 ]; then
       docker buildx build --platform 'linux/riscv64' -f 'alpine.Dockerfile' --build-arg IMAGE_VERSION='riscv64/alpine:edge' -t "${ORG}"'/'"${REPO}":'alpine-riscv64' . "${DOCKER_ARGS}"
     fi
-  ;;
-esac
-
-#:latest ubuntu:24.04
-case "${IMAGES}" in
-  *'ubuntu:24.04'*)
-    docker buildx build --platform "${PLATFORM_DEB}" -f 'ubuntu.Dockerfile' --build-arg IMAGE_VERSION='ubuntu:24.04' -t "${ORG}"'/'"${REPO}":'latest' . "${DOCKER_ARGS}"
   ;;
 esac
 

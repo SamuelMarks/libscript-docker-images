@@ -33,7 +33,7 @@ RUN <<-EOF
 set -eu +f ;
 apt-get update &&
 apt-get -y upgrade &&
-apt-get install -y openssh-server rsync jq curl envsubst pandoc libarchive-zip-perl &&
+apt-get install -y openssh-server rsync jq curl gettext-base pandoc libarchive-zip-perl &&
 # Deleting keys
 rm -rf -- '/etc/ssh/ssh_host_dsa'* '/etc/ssh/ssh_host_ecdsa'* '/etc/ssh/ssh_host_ed25519'* '/etc/ssh/ssh_host_rsa'* &&
 # Config SSH

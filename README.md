@@ -22,7 +22,7 @@ Configurable with: password or public key authentication.
 
 ## Image Tags
 
-Tags are defined by the mask: `samuelmarks/openssh-server:<OS_name>-<OS_version>`. For example, the image `samuelmarks/openssh-server:ubuntu-24.04` is built based on Ubuntu version 24.04.
+Tags are defined by the mask: `samuelmarks/libscript-docker-images:<OS_name>-<OS_version>`. For example, the image `samuelmarks/libscript-docker-images:ubuntu-24.04` is built based on Ubuntu version 24.04.
 
 Images for the following OS versions are builded:
 
@@ -55,7 +55,7 @@ $ docker run --name openssh-server \
     -p 2222:22 \
     -e USER_PASSWORD='null' \
     -e USER_PUBKEY="$(cat -- .ssh/id_rsa.pub)" \
-    samuelmarks/openssh-server:ubuntu
+    samuelmarks/libscript-docker-images:ubuntu
 ```
 
 ### Environment Variables
@@ -73,7 +73,7 @@ $ docker run -d --name openssh-server \
     -p 2222:22 \
     -e USER_PASSWORD=654321 \
     -v openssh-server-data:/data \
-    samuelmarks/openssh-server:ubuntu
+    samuelmarks/libscript-docker-images:ubuntu
 ````
 
 
@@ -86,7 +86,7 @@ $ docker run -d --name openssh-server \
     -p 2222:22 \
     -e USER_PASSWORD=654321 \
     -v openssh-server-data:/data \
-    samuelmarks/openssh-server:ubuntu
+    samuelmarks/libscript-docker-images:ubuntu
 ```
 
 docker-compose:
@@ -95,7 +95,7 @@ docker-compose:
 version: '3.5'
 services:
   openssh-server:
-    image: samuelmarks/openssh-server:ubuntu
+    image: samuelmarks/libscript-docker-images:ubuntu
     container_name: openssh-server
     environment:
       - USER_PASSWORD=654321

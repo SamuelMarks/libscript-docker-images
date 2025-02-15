@@ -33,8 +33,8 @@ RUN <<-EOF
 set -eu +f ;
 apk update &&
 apk add --no-cache --upgrade openssh-server rsync jq curl perl-archive-zip &&
-apk add --no-cache gettext-envsubst --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main &&
-apk add --no-cache pandoc-cli --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community &&
+apk add --no-cache gettext-envsubst --repository='https://dl-cdn.alpinelinux.org/alpine/edge/main' &&
+apk add --no-cache pandoc-cli --repository='https://dl-cdn.alpinelinux.org/alpine/edge/community' &&
 # Deleting keys
 rm -rf '/etc/ssh/ssh_host_dsa'* '/etc/ssh/ssh_host_ecdsa'* '/etc/ssh/ssh_host_ed25519'* '/etc/ssh/ssh_host_rsa'* &&
 # Config SSH
