@@ -14,6 +14,7 @@ ls -- '/etc/ssh/ssh_host_'* >/dev/null 2>&1 && printf 'Keys is found\n' || print
 #   USER_PASSWORD
 #   USER_PUBKEY
 
+[ -d '/root/.ssh' ] || mkdir -p -- '/root/.ssh'
 chmod 700 '/root/.ssh'
 
 #Set password or pubkey
