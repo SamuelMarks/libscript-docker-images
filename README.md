@@ -6,7 +6,7 @@ SSH configured images useful as a clean environment for testing if [libscript](h
 
 These are Docker base images for Ubuntu, Debian, Alpine with OpenSSH started.
 
-Supports: amd64, aarch64 (ARM64v8), armhf (ARM32v7), RISC-V (riscv64).
+Supports: [amd64](https://en.wikipedia.org/wiki/X86-64#AMD64), [aarch64](https://en.wikipedia.org/wiki/AArch64) (ARM64v8), [armhf](https://en.wikipedia.org/wiki/ARM_architecture_family#VFP) (ARM32v7), [RISC-V](https://en.wikipedia.org/wiki/RISC-V) (riscv64).
 
 Configurable with: password or public key authentication.
 
@@ -18,7 +18,7 @@ Configurable with: password or public key authentication.
 ## Features
 
 * SSH. Allow SSH connection to the container.
-* Preinstalled: `rsync`; `curl`; `jq`; `envsubst`; `pandoc`; `crc32`.
+* Preinstalled: [`rsync`](https://en.wikipedia.org/wiki/Rsync); [`curl`](https://en.wikipedia.org/wiki/CURL); [`jq`](https://en.wikipedia.org/wiki/Jq_(programming_language)); [`envsubst`](https://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html); [`pandoc`](https://en.wikipedia.org/wiki/Pandoc); [`crc32`](https://manpages.debian.org/testing/libarchive-zip-perl/crc32.1.en.html).
 
 ## Image Tags
 
