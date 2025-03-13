@@ -54,6 +54,6 @@ else
     touch -- '/tmp/.isauthset'
 fi
 
-# printf 'Run sshd\n'
+printf 'Ready! - Try SSHing in.\n'
 
 exec "$@"

@@ -19,6 +19,7 @@ LABEL build_version="Image version:- ${IMAGE_VERSION}"
 
 ENV LANG='en_US.UTF-8'
 ENV LANGUAGE='en_US.UTF-8'
+ENV DEBIAN_FRONTEND='noninteractive'
 
 # Password for ssh
 ENV USER_PASSWORD=123456
