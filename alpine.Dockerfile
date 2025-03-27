@@ -32,9 +32,12 @@ COPY copyables /
 RUN <<-EOF
 set -eu +f ;
 apk update &&
-apk add --no-cache --upgrade openssh-server rsync jq curl perl-archive-zip &&
+apk add --no-cache --upgrade openssh-server openssh-server-common-openrc openrc mdevd-openrc rsync jq curl perl-archive-zip &&
 apk add --no-cache gettext-envsubst --repository='https://dl-cdn.alpinelinux.org/alpine/edge/main' &&
 apk add --no-cache pandoc-cli --repository='https://dl-cdn.alpinelinux.org/alpine/edge/community' &&
+# init system
+sed -i '/getty/d' /etc/inittab &&
+rc-update add sshd default &&
 # Deleting keys
 rm -rf '/etc/ssh/ssh_host_dsa'* '/etc/ssh/ssh_host_ecdsa'* '/etc/ssh/ssh_host_ed25519'* '/etc/ssh/ssh_host_rsa'* &&
 # Config SSH
@@ -61,4 +64,4 @@ EXPOSE 22/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/sbin/init"]
